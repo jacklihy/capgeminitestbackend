@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.capgeminitestbackend.mapper.SysBookMapper">
+    <resultMap type="SysBook" id="SysBookResult">
+        <result property="bookId" column="book_id"></result>
+        <result property="bookTitle" column="book_title"></result>
+        <result property="bookAuth" column="book_auth"></result>
+        <result property="bookContent" column="book_content"></result>
+        <result property="bookversionDate" column="bookversion_date"></result>
+        <result property="bookIsbn" column="book_Isbn"></result>
+    </resultMap>
+    <sql id="selectConfigVo">
+      select  book_id, book_title, book_auth, book_content, bookversion_date, book_Isbn from sys_book
+    </sql>
+    <!-- query condition -->
+    <sql id="sqlwhereSearch">
+            <where>
+
+            </where>
+    </sql>
+
+    <select id="selectSysBookList" parameterType="SysBook" resultMap="SysBookResult">
+        <include refid="selectConfigVo"/>
+        <where>
+            <if test="bookId != null">
+                and book_id= #{bookId}
+            </if>
+            <if test ="bookTitle !=null">
+                and book_title = #{bookTitle}
+            </if>
+            <if test ="bookAuth != null">
+                and book_auth = #{bookAuth}
+            </if>
+            <if test = "bookIsbn != null">
+                and book_Isbn = #{bookIsbn}
+            </if>
+            <if test="bookversionDate != null">
+                and bookversion_date= #{bookversionDate}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectSysBookByBooId" parameterType="Long" resultMap="SysBookResult">
+        <include refid="selectConfigVo"/>
+        where book_id = #{bookId}
+    </select>
+
+    <insert id="insertSysBook" parameterType="SysBook">
+        insert into sys_book (
+        <if test="bookId != null"> book_id,</if>
+        <if test ="bookTitle !=null">book_title ,</if>
+        <if test ="bookAuth != null">book_auth,</if>
+        <if test = "bookIsbn != null">book_Isbn, </if>
+        <if test="bookversionDate != null">bookversion_date</if>
+       )values(
+        <if test="bookId != null"> #{bookId},</if>
+        <if test ="bookTitle !=null">#{bookTitle} ,</if>
+        <if test ="bookAuth != null">#{bookAuth},</if>
+        <if test = "bookIsbn != null">#{bookIsbn},</if>
+        <if test="bookversionDate != null">#{bookversionDate}</if>
+        )
+    </insert>
+
+    <update id="updateSysBook" parameterType="SysBook">
+        update sys_book
+        <set>
+            <if test="bookId != null">book_id= #{bookId},</if>
+            <if test ="bookTitle !=null">book_title = #{bookTitle},</if>
+            <if test ="bookAuth != null">book_auth = #{bookAuth},</if>
+            <if test = "bookIsbn != null">book_Isbn = #{bookIsbn},</if>
+            <if test = "bookContent != null">book_content = #{bookContent},</if>
+            <if test="bookversionDate != null">bookversion_date= #{bookversionDate}</if>
+        </set>
+        where book_id = #{bookId}
+    </update>
+
+    <delete id="deleteSysBook" parameterType="Long">
+        delete from sys_book where book_id = #{bookId}
+    </delete>
+
+    <delete id="deleteSysBooks" parameterType="Long">
+        delete from sys_book where book_id in
+        <foreach item="book_id" collection="array" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+    </delete>
+    <select id="checkConfigKeyUnique" parameterType="String" resultMap="SysBookResult">
+        <include refid="selectConfigVo"/>
+        where book_title = #{bookTitle} limit 1
+    </select>
+
+</mapper>
