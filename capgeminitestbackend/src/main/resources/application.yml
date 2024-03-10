@@ -1,15 +1,8 @@
 
 server:
   # server port 8181
-  port: 8484
-  servlet:
-    context-path: /
-  tomcat:
-    uri-encoding: UTF-8
-    accept-count: 1000
-    threads:
-      max: 800
-      min-spare: 100
+  port: 8282
+
 
 # logconfig
 logging:
@@ -39,15 +32,6 @@ spring:
     # Internation file
     basename: i18n/messages
 
-# tokenconfig
-token:
-    # tokenflag
-    header: Authorization
-    # token secret
-    secret: abcdefghijklmnopqrstuvwxyz
-    # token timelong
-    expireTime: 30000
-  
 # MyBatis config
 mybatis:
   # search package name
